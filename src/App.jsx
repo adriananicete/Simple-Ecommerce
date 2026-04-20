@@ -3,10 +3,12 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Checkout from "./pages/Checkout";
 import NavBar from "./components/NavBar";
+import AuthProvider from "./context/AuthContext";
 
 function App() {
   return ( 
-    <div className="app">
+    <AuthProvider>
+      <div className="app">
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />}/>
@@ -14,6 +16,7 @@ function App() {
         <Route path="/checkout" element={<Checkout />}/>
       </Routes>
     </div>
+    </AuthProvider>
    );
 }
 
