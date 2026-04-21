@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router";
 
 function Auth() {
@@ -9,7 +9,7 @@ function Auth() {
   const navigate = useNavigate();
 
 
-  const { signup, user, login, logout } = useContext(AuthContext)
+  const { signup, login } = useAuth()
 
   const {
     register,
