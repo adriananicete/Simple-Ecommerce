@@ -1,8 +1,23 @@
+import { useNavigate } from "react-router";
+import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 
 function Checkout() {
-  const { getCartItemsWithProduct, updateQuantity, removeFromCart } = useCart();
+  const { getCartItemsWithProduct, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart();
+  const { user } = useAuth();
   const cartItems = getCartItemsWithProduct();
+  const navigate = useNavigate()
+  const total = getCartTotal()
+
+  function placeOrder(users) {
+    if(!user) {
+      alert('You need to Sign In first!');
+      navigate('/auth');
+    } else { 
+      alert('Successful Order!');
+    clearCart();
+    }
+  }
   return (
     <div className="page">
       <div className="container">
@@ -34,6 +49,19 @@ function Checkout() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div className="checkout-summary">
+              <h2 className="checkout-section-title">Total</h2>
+              <div className="checkout-total">
+                <p className="checkout-total-label">Subtotal:</p>
+                <p className="checkout-total-value">${total.toFixed(2)}</p>
+              </div>
+              <div className="checkout-total">
+                <p className="checkout-total-label">Total:</p>
+                <p className="checkout-total-value">${total.toFixed(2)}</p>
+              </div>
+              <button onClick={placeOrder} className="btn btn-primary btn-large btn-block">Place Order</button>
             </div>
           </div>
         </div>

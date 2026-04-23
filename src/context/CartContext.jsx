@@ -23,26 +23,56 @@ function CartProvider({ children }) {
   }
 
   function getCartItemsWithProduct() {
-    return cartItems.map(item => ({...item, product: getProductById(item.id)})).filter(item => item.product);
+    return cartItems
+      .map((item) => ({ ...item, product: getProductById(item.id) }))
+      .filter((item) => item.product);
   }
 
   function removeFromCart(productId) {
-    setCartItems(cartItems.filter(item => item.id !== productId))
+    setCartItems(cartItems.filter((item) => item.id !== productId));
   }
 
   function updateQuantity(productId, quantity) {
-    if(quantity <= 0) {
+    if (quantity <= 0) {
       removeFromCart(productId);
       return;
     } else {
-      setCartItems(cartItems.map(item => item.id === productId ? {...item,quantity} : item))
+      setCartItems(
+        cartItems.map((item) =>
+          item.id === productId ? { ...item, quantity } : item,
+        ),
+      );
     }
-    
   }
 
-  
+  function getCartTotal() {
+    const total = cartItems.reduce((total, item) => {
+      const product = getProductById(item.id);
+      return total + (product ? product.price * item.quantity : 0);
+    }, 0);
 
-  return <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, getCartItemsWithProduct, removeFromCart}}>{children}</CartContext.Provider>;
+    return total;
+  }
+
+  function clearCart() {
+    setCartItems([]);
+  }
+
+  return (
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        updateQuantity,
+        getCartItemsWithProduct,
+        removeFromCart,
+        getCartTotal,
+        clearCart
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 }
 
 export default CartProvider;
